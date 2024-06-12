@@ -5,9 +5,18 @@ Subject: [PATCH] Tempered Ender Dragon
 
 
 diff --git a/src/main/java/net/minecraft/world/entity/boss/enderdragon/EnderDragon.java b/src/main/java/net/minecraft/world/entity/boss/enderdragon/EnderDragon.java
-index 1df13af62af7d0bbd92c84d424a07da66bb8583f..c433ffdded82a92be8277611deb1b82ca51dc51b 100644
+index 1df13af62af7d0bbd92c84d424a07da66bb8583f..27a55f8eb68e8f24a648113e772670cd136ce909 100644
 --- a/src/main/java/net/minecraft/world/entity/boss/enderdragon/EnderDragon.java
 +++ b/src/main/java/net/minecraft/world/entity/boss/enderdragon/EnderDragon.java
+@@ -145,7 +145,7 @@ public class EnderDragon extends Mob implements Enemy {
+     }
+ 
+     public static AttributeSupplier.Builder createAttributes() {
+-        return Mob.createMobAttributes().add(Attributes.MAX_HEALTH, 200.0D);
++        return Mob.createMobAttributes().add(Attributes.MAX_HEALTH, 1200.0D);
+     }
+ 
+     // Paper start - Allow changing the EnderDragon podium
 @@ -609,7 +609,7 @@ public class EnderDragon extends Mob implements Enemy {
              if (amount < 0.01F) {
                  return false;
@@ -170,7 +179,7 @@ index c5269c3117901b8521720d1b32689d7f600f20a3..f348872e5625e8add0c062d5905f5d85
          this.currentPath = null;
          this.attackTarget = null;
 diff --git a/src/main/java/net/minecraft/world/entity/projectile/DragonFireball.java b/src/main/java/net/minecraft/world/entity/projectile/DragonFireball.java
-index 6bf11d526b82403e9a5443ac77645cf2b4bc1ad8..7bbc11eee084eb6207bd2741f049c851aa8ce3e8 100644
+index 6bf11d526b82403e9a5443ac77645cf2b4bc1ad8..a7a8c63bf61475ebdd45313c5149798f77787fa2 100644
 --- a/src/main/java/net/minecraft/world/entity/projectile/DragonFireball.java
 +++ b/src/main/java/net/minecraft/world/entity/projectile/DragonFireball.java
 @@ -11,6 +11,8 @@ import net.minecraft.world.entity.AreaEffectCloud;
@@ -199,6 +208,15 @@ index 6bf11d526b82403e9a5443ac77645cf2b4bc1ad8..7bbc11eee084eb6207bd2741f049c851
      @Override
      protected void onHit(HitResult hitResult) {
          super.onHit(hitResult);
+@@ -45,7 +57,7 @@ public class DragonFireball extends AbstractHurtingProjectile {
+ 
+                 entityareaeffectcloud.setParticle(ParticleTypes.DRAGON_BREATH);
+                 entityareaeffectcloud.setRadius(3.0F);
+-                entityareaeffectcloud.setDuration(600);
++                entityareaeffectcloud.setDuration(150);
+                 entityareaeffectcloud.setRadiusPerTick((7.0F - entityareaeffectcloud.getRadius()) / (float) entityareaeffectcloud.getDuration());
+                 entityareaeffectcloud.addEffect(new MobEffectInstance(MobEffects.HARM, 1, 1));
+                 if (!list.isEmpty()) {
 @@ -62,10 +74,9 @@ public class DragonFireball extends AbstractHurtingProjectile {
                      }
                  }
