@@ -170,7 +170,7 @@ index c5269c3117901b8521720d1b32689d7f600f20a3..f348872e5625e8add0c062d5905f5d85
          this.currentPath = null;
          this.attackTarget = null;
 diff --git a/src/main/java/net/minecraft/world/entity/projectile/DragonFireball.java b/src/main/java/net/minecraft/world/entity/projectile/DragonFireball.java
-index 6bf11d526b82403e9a5443ac77645cf2b4bc1ad8..18863037dbc52a8c2122d477d695e08e8fed7401 100644
+index 6bf11d526b82403e9a5443ac77645cf2b4bc1ad8..7bbc11eee084eb6207bd2741f049c851aa8ce3e8 100644
 --- a/src/main/java/net/minecraft/world/entity/projectile/DragonFireball.java
 +++ b/src/main/java/net/minecraft/world/entity/projectile/DragonFireball.java
 @@ -11,6 +11,8 @@ import net.minecraft.world.entity.AreaEffectCloud;
@@ -207,7 +207,7 @@ index 6bf11d526b82403e9a5443ac77645cf2b4bc1ad8..18863037dbc52a8c2122d477d695e08e
                  this.level().levelEvent(2006, this.blockPosition(), this.isSilent() ? -1 : 1);
                  this.level().addFreshEntity(entityareaeffectcloud, org.bukkit.event.entity.CreatureSpawnEvent.SpawnReason.EXPLOSION); // Paper - use correct spawn reason
 -                } else entityareaeffectcloud.discard(null); // Paper - EnderDragon Events
-+                this.level().explode(this, this.getX(), this.getY(), this.getZ(), 3.5F, true, Level.ExplosionInteraction.MOB);
++                this.level().explode(this, this.getX(), this.getY(), this.getZ(), 7F, true, Level.ExplosionInteraction.MOB);
                  this.discard(EntityRemoveEvent.Cause.HIT); // CraftBukkit - add Bukkit remove cause
              }
  
