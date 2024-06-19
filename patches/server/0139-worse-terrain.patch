@@ -1,0 +1,25 @@
+From 0000000000000000000000000000000000000000 Mon Sep 17 00:00:00 2001
+From: Bluemangoo <chenfy2006@qq.com>
+Date: Wed, 19 Jun 2024 14:02:18 +0800
+Subject: [PATCH] worse terrain
+
+
+diff --git a/src/main/java/net/minecraft/world/level/levelgen/feature/SpikeFeature.java b/src/main/java/net/minecraft/world/level/levelgen/feature/SpikeFeature.java
+index 260c3a7dc592fba220ad4a7febb43ee2c9279115..823b125977e47a011e1166334181d4ae8f074ed5 100644
+--- a/src/main/java/net/minecraft/world/level/levelgen/feature/SpikeFeature.java
++++ b/src/main/java/net/minecraft/world/level/levelgen/feature/SpikeFeature.java
+@@ -94,12 +94,8 @@ public class SpikeFeature extends Feature<SpikeConfiguration> {
+                         if (bl || bl2 || bl3) {
+                             boolean bl4 = m == -2 || m == 2 || bl3;
+                             boolean bl5 = n == -2 || n == 2 || bl3;
+-                            BlockState blockState = Blocks.IRON_BARS
+-                                .defaultBlockState()
+-                                .setValue(IronBarsBlock.NORTH, Boolean.valueOf(bl4 && n != -2))
+-                                .setValue(IronBarsBlock.SOUTH, Boolean.valueOf(bl4 && n != 2))
+-                                .setValue(IronBarsBlock.WEST, Boolean.valueOf(bl5 && m != -2))
+-                                .setValue(IronBarsBlock.EAST, Boolean.valueOf(bl5 && m != 2));
++                            BlockState blockState = Blocks.CRYING_OBSIDIAN
++                                .defaultBlockState();
+                             this.setBlock(world, mutableBlockPos.set(spike.getCenterX() + m, spike.getHeight() + o, spike.getCenterZ() + n), blockState);
+                         }
+                     }
