@@ -82,7 +82,7 @@ index ddf668205a7cb29b9018bf9eea49667b5fd2d471..973c7e5a911b568888cb50febeff4077
  
          if (this.currentPath == null || this.currentPath.isDone()) {
 diff --git a/src/main/java/net/minecraft/world/entity/boss/enderdragon/phases/DragonStrafePlayerPhase.java b/src/main/java/net/minecraft/world/entity/boss/enderdragon/phases/DragonStrafePlayerPhase.java
-index c5269c3117901b8521720d1b32689d7f600f20a3..f348872e5625e8add0c062d5905f5d856f7d5b45 100644
+index c5269c3117901b8521720d1b32689d7f600f20a3..c45ea43a1607808b206df385cf6b87f479aff4e0 100644
 --- a/src/main/java/net/minecraft/world/entity/boss/enderdragon/phases/DragonStrafePlayerPhase.java
 +++ b/src/main/java/net/minecraft/world/entity/boss/enderdragon/phases/DragonStrafePlayerPhase.java
 @@ -4,8 +4,10 @@ import com.mojang.logging.LogUtils;
@@ -96,8 +96,12 @@ index c5269c3117901b8521720d1b32689d7f600f20a3..f348872e5625e8add0c062d5905f5d85
  import net.minecraft.world.entity.projectile.DragonFireball;
  import net.minecraft.world.level.pathfinder.Node;
  import net.minecraft.world.level.pathfinder.Path;
-@@ -48,53 +50,28 @@ public class DragonStrafePlayerPhase extends AbstractDragonPhaseInstance {
-             if (j < 100.0 || j > 22500.0) {
+@@ -45,56 +47,31 @@ public class DragonStrafePlayerPhase extends AbstractDragonPhaseInstance {
+             }
+ 
+             double j = this.targetLocation == null ? 0.0 : this.targetLocation.distanceToSqr(this.dragon.getX(), this.dragon.getY(), this.dragon.getZ());
+-            if (j < 100.0 || j > 22500.0) {
++            if (j < 100.0 || j > 2500.0) {
                  this.findNewTarget();
              }
 +            Vec3 vec33 = this.dragon.getViewVector(1.0F);
