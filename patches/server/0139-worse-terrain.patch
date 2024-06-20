@@ -5,21 +5,134 @@ Subject: [PATCH] worse terrain
 
 
 diff --git a/src/main/java/net/minecraft/world/level/levelgen/feature/SpikeFeature.java b/src/main/java/net/minecraft/world/level/levelgen/feature/SpikeFeature.java
-index 260c3a7dc592fba220ad4a7febb43ee2c9279115..823b125977e47a011e1166334181d4ae8f074ed5 100644
+index 260c3a7dc592fba220ad4a7febb43ee2c9279115..00137f78d07175d796ab14efa83746cd08905bc1 100644
 --- a/src/main/java/net/minecraft/world/level/levelgen/feature/SpikeFeature.java
 +++ b/src/main/java/net/minecraft/world/level/levelgen/feature/SpikeFeature.java
-@@ -94,12 +94,8 @@ public class SpikeFeature extends Feature<SpikeConfiguration> {
-                         if (bl || bl2 || bl3) {
-                             boolean bl4 = m == -2 || m == 2 || bl3;
-                             boolean bl5 = n == -2 || n == 2 || bl3;
+@@ -7,9 +7,11 @@ import com.google.common.collect.Lists;
+ import com.mojang.serialization.Codec;
+ import com.mojang.serialization.codecs.RecordCodecBuilder;
+ import it.unimi.dsi.fastutil.ints.IntArrayList;
++
+ import java.util.List;
+ import java.util.concurrent.TimeUnit;
+ import java.util.stream.IntStream;
++
+ import net.minecraft.Util;
+ import net.minecraft.core.BlockPos;
+ import net.minecraft.core.SectionPos;
+@@ -71,7 +73,7 @@ public class SpikeFeature extends Feature<SpikeConfiguration> {
+             new BlockPos(spike.getCenterX() - i, world.getMinBuildHeight(), spike.getCenterZ() - i),
+             new BlockPos(spike.getCenterX() + i, spike.getHeight() + 10, spike.getCenterZ() + i)
+         )) {
+-            if (blockPos.distToLowCornerSqr((double)spike.getCenterX(), (double)blockPos.getY(), (double)spike.getCenterZ()) <= (double)(i * i + 1)
++            if (blockPos.distToLowCornerSqr((double) spike.getCenterX(), (double) blockPos.getY(), (double) spike.getCenterZ()) <= (double) (i * i + 1)
+                 && blockPos.getY() < spike.getHeight()) {
+                 this.setBlock(world, blockPos, Blocks.OBSIDIAN.defaultBlockState());
+             } else if (blockPos.getY() > 65) {
+@@ -79,29 +81,23 @@ public class SpikeFeature extends Feature<SpikeConfiguration> {
+             }
+         }
+ 
+-        if (spike.isGuarded()) {
+-            int j = -2;
+-            int k = 2;
+-            int l = 3;
+-            BlockPos.MutableBlockPos mutableBlockPos = new BlockPos.MutableBlockPos();
+-
+-            for (int m = -2; m <= 2; m++) {
+-                for (int n = -2; n <= 2; n++) {
+-                    for (int o = 0; o <= 3; o++) {
+-                        boolean bl = Mth.abs(m) == 2;
+-                        boolean bl2 = Mth.abs(n) == 2;
+-                        boolean bl3 = o == 3;
+-                        if (bl || bl2 || bl3) {
+-                            boolean bl4 = m == -2 || m == 2 || bl3;
+-                            boolean bl5 = n == -2 || n == 2 || bl3;
 -                            BlockState blockState = Blocks.IRON_BARS
 -                                .defaultBlockState()
 -                                .setValue(IronBarsBlock.NORTH, Boolean.valueOf(bl4 && n != -2))
 -                                .setValue(IronBarsBlock.SOUTH, Boolean.valueOf(bl4 && n != 2))
 -                                .setValue(IronBarsBlock.WEST, Boolean.valueOf(bl5 && m != -2))
 -                                .setValue(IronBarsBlock.EAST, Boolean.valueOf(bl5 && m != 2));
-+                            BlockState blockState = Blocks.CRYING_OBSIDIAN
-+                                .defaultBlockState();
-                             this.setBlock(world, mutableBlockPos.set(spike.getCenterX() + m, spike.getHeight() + o, spike.getCenterZ() + n), blockState);
-                         }
+-                            this.setBlock(world, mutableBlockPos.set(spike.getCenterX() + m, spike.getHeight() + o, spike.getCenterZ() + n), blockState);
+-                        }
++        int j = -2;
++        int k = 2;
++        int l = 3;
++        BlockPos.MutableBlockPos mutableBlockPos = new BlockPos.MutableBlockPos();
++
++        for (int m = -4; m <= 4; m++) {
++            for (int n = -4; n <= 4; n++) {
++                for (int o = -2; o <= 5; o++) {
++                    boolean bl = Mth.abs(m) >= 2;
++                    boolean bl2 = Mth.abs(n) >= 2;
++                    boolean bl3 = o >= 3 || o < 0;
++                    if (bl || bl2 || bl3) {
++                        boolean bl4 = m == -2 || m == 2 || bl3;
++                        boolean bl5 = n == -2 || n == 2 || bl3;
++                        BlockState blockState = Blocks.CRYING_OBSIDIAN
++                            .defaultBlockState();
++                        this.setBlock(world, mutableBlockPos.set(spike.getCenterX() + m, spike.getHeight() + o, spike.getCenterZ() + n), blockState);
                      }
+                 }
+             }
+@@ -112,7 +108,7 @@ public class SpikeFeature extends Feature<SpikeConfiguration> {
+             endCrystal.setBeamTarget(config.getCrystalBeamTarget());
+             endCrystal.setInvulnerable(config.isCrystalInvulnerable());
+             endCrystal.moveTo(
+-                (double)spike.getCenterX() + 0.5, (double)(spike.getHeight() + 1), (double)spike.getCenterZ() + 0.5, random.nextFloat() * 360.0F, 0.0F
++                (double) spike.getCenterX() + 0.5, (double) (spike.getHeight() + 1), (double) spike.getCenterZ() + 0.5, random.nextFloat() * 360.0F, 0.0F
+             );
+             endCrystal.generatedByDragonFight = true; // Paper - Fix invulnerable end crystals
+             world.addFreshEntity(endCrystal);
+@@ -125,13 +121,13 @@ public class SpikeFeature extends Feature<SpikeConfiguration> {
+     public static class EndSpike {
+         public static final Codec<SpikeFeature.EndSpike> CODEC = RecordCodecBuilder.create(
+             instance -> instance.group(
+-                        Codec.INT.fieldOf("centerX").orElse(0).forGetter(spike -> spike.centerX),
+-                        Codec.INT.fieldOf("centerZ").orElse(0).forGetter(spike -> spike.centerZ),
+-                        Codec.INT.fieldOf("radius").orElse(0).forGetter(spike -> spike.radius),
+-                        Codec.INT.fieldOf("height").orElse(0).forGetter(spike -> spike.height),
+-                        Codec.BOOL.fieldOf("guarded").orElse(false).forGetter(spike -> spike.guarded)
+-                    )
+-                    .apply(instance, SpikeFeature.EndSpike::new)
++                    Codec.INT.fieldOf("centerX").orElse(0).forGetter(spike -> spike.centerX),
++                    Codec.INT.fieldOf("centerZ").orElse(0).forGetter(spike -> spike.centerZ),
++                    Codec.INT.fieldOf("radius").orElse(0).forGetter(spike -> spike.radius),
++                    Codec.INT.fieldOf("height").orElse(0).forGetter(spike -> spike.height),
++                    Codec.BOOL.fieldOf("guarded").orElse(false).forGetter(spike -> spike.guarded)
++                )
++                .apply(instance, SpikeFeature.EndSpike::new)
+         );
+         private final int centerX;
+         private final int centerZ;
+@@ -147,12 +143,12 @@ public class SpikeFeature extends Feature<SpikeConfiguration> {
+             this.height = height;
+             this.guarded = guarded;
+             this.topBoundingBox = new AABB(
+-                (double)(centerX - radius),
+-                (double)DimensionType.MIN_Y,
+-                (double)(centerZ - radius),
+-                (double)(centerX + radius),
+-                (double)DimensionType.MAX_Y,
+-                (double)(centerZ + radius)
++                (double) (centerX - radius),
++                (double) DimensionType.MIN_Y,
++                (double) (centerZ - radius),
++                (double) (centerX + radius),
++                (double) DimensionType.MAX_Y,
++                (double) (centerZ + radius)
+             );
+         }
+ 
+@@ -193,8 +189,8 @@ public class SpikeFeature extends Feature<SpikeConfiguration> {
+             List<SpikeFeature.EndSpike> list = Lists.newArrayList();
+ 
+             for (int i = 0; i < 10; i++) {
+-                int j = Mth.floor(42.0 * Math.cos(2.0 * (-Math.PI + (Math.PI / 10) * (double)i)));
+-                int k = Mth.floor(42.0 * Math.sin(2.0 * (-Math.PI + (Math.PI / 10) * (double)i)));
++                int j = Mth.floor(42.0 * Math.cos(2.0 * (-Math.PI + (Math.PI / 10) * (double) i)));
++                int k = Mth.floor(42.0 * Math.sin(2.0 * (-Math.PI + (Math.PI / 10) * (double) i)));
+                 int l = intArrayList.get(i);
+                 int m = 2 + l / 3;
+                 int n = 76 + l * 3;
