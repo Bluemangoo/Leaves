@@ -82,11 +82,16 @@ index ddf668205a7cb29b9018bf9eea49667b5fd2d471..973c7e5a911b568888cb50febeff4077
  
          if (this.currentPath == null || this.currentPath.isDone()) {
 diff --git a/src/main/java/net/minecraft/world/entity/boss/enderdragon/phases/DragonStrafePlayerPhase.java b/src/main/java/net/minecraft/world/entity/boss/enderdragon/phases/DragonStrafePlayerPhase.java
-index c5269c3117901b8521720d1b32689d7f600f20a3..c45ea43a1607808b206df385cf6b87f479aff4e0 100644
+index c5269c3117901b8521720d1b32689d7f600f20a3..56e4c2901a00272f2d4374443b4c22ea1f158c6b 100644
 --- a/src/main/java/net/minecraft/world/entity/boss/enderdragon/phases/DragonStrafePlayerPhase.java
 +++ b/src/main/java/net/minecraft/world/entity/boss/enderdragon/phases/DragonStrafePlayerPhase.java
-@@ -4,8 +4,10 @@ import com.mojang.logging.LogUtils;
+@@ -1,17 +1,23 @@
+ package net.minecraft.world.entity.boss.enderdragon.phases;
+ 
+ import com.mojang.logging.LogUtils;
++
  import javax.annotation.Nullable;
++
  import net.minecraft.core.Vec3i;
  import net.minecraft.util.Mth;
 +import net.minecraft.world.damagesource.DamageSource;
@@ -96,12 +101,28 @@ index c5269c3117901b8521720d1b32689d7f600f20a3..c45ea43a1607808b206df385cf6b87f4
  import net.minecraft.world.entity.projectile.DragonFireball;
  import net.minecraft.world.level.pathfinder.Node;
  import net.minecraft.world.level.pathfinder.Path;
-@@ -45,56 +47,31 @@ public class DragonStrafePlayerPhase extends AbstractDragonPhaseInstance {
+ import net.minecraft.world.phys.Vec3;
+ import org.slf4j.Logger;
+ 
++import java.util.Random;
++
+ public class DragonStrafePlayerPhase extends AbstractDragonPhaseInstance {
+     private static final Logger LOGGER = LogUtils.getLogger();
+     private static final int FIREBALL_CHARGE_AMOUNT = 5;
+@@ -23,6 +29,7 @@ public class DragonStrafePlayerPhase extends AbstractDragonPhaseInstance {
+     @Nullable
+     private LivingEntity attackTarget;
+     private boolean holdingPatternClockwise;
++    private final Random newtargetRandom = new Random();
+ 
+     public DragonStrafePlayerPhase(EnderDragon dragon) {
+         super(dragon);
+@@ -45,56 +52,31 @@ public class DragonStrafePlayerPhase extends AbstractDragonPhaseInstance {
              }
  
              double j = this.targetLocation == null ? 0.0 : this.targetLocation.distanceToSqr(this.dragon.getX(), this.dragon.getY(), this.dragon.getZ());
 -            if (j < 100.0 || j > 22500.0) {
-+            if (j < 100.0 || j > 2500.0) {
++            if (j < 100.0 || j > 2500.0 || this.newtargetRandom.nextInt(21) == 0) {
                  this.findNewTarget();
              }
 +            Vec3 vec33 = this.dragon.getViewVector(1.0F);
@@ -173,7 +194,25 @@ index c5269c3117901b8521720d1b32689d7f600f20a3..c45ea43a1607808b206df385cf6b87f4
              }
          }
      }
-@@ -152,7 +129,7 @@ public class DragonStrafePlayerPhase extends AbstractDragonPhaseInstance {
+@@ -138,13 +120,13 @@ public class DragonStrafePlayerPhase extends AbstractDragonPhaseInstance {
+         if (this.currentPath != null && !this.currentPath.isDone()) {
+             Vec3i vec3i = this.currentPath.getNextNodePos();
+             this.currentPath.advance();
+-            double d = (double)vec3i.getX();
+-            double e = (double)vec3i.getZ();
++            double d = (double) vec3i.getX();
++            double e = (double) vec3i.getZ();
+ 
+             double f;
+             do {
+-                f = (double)((float)vec3i.getY() + this.dragon.getRandom().nextFloat() * 20.0F);
+-            } while (f < (double)vec3i.getY());
++                f = (double) ((float) vec3i.getY() + this.dragon.getRandom().nextFloat() * 20.0F);
++            } while (f < (double) vec3i.getY());
+ 
+             this.targetLocation = new Vec3(d, f, e);
+         }
+@@ -152,7 +134,7 @@ public class DragonStrafePlayerPhase extends AbstractDragonPhaseInstance {
  
      @Override
      public void begin() {
@@ -182,6 +221,17 @@ index c5269c3117901b8521720d1b32689d7f600f20a3..c45ea43a1607808b206df385cf6b87f4
          this.targetLocation = null;
          this.currentPath = null;
          this.attackTarget = null;
+@@ -164,8 +146,8 @@ public class DragonStrafePlayerPhase extends AbstractDragonPhaseInstance {
+         int j = this.dragon.findClosestNode(this.attackTarget.getX(), this.attackTarget.getY(), this.attackTarget.getZ());
+         int k = this.attackTarget.getBlockX();
+         int l = this.attackTarget.getBlockZ();
+-        double d = (double)k - this.dragon.getX();
+-        double e = (double)l - this.dragon.getZ();
++        double d = (double) k - this.dragon.getX();
++        double e = (double) l - this.dragon.getZ();
+         double f = Math.sqrt(d * d + e * e);
+         double g = Math.min(0.4F + f / 80.0 - 1.0, 10.0);
+         int m = Mth.floor(this.attackTarget.getY() + g);
 diff --git a/src/main/java/net/minecraft/world/entity/projectile/DragonFireball.java b/src/main/java/net/minecraft/world/entity/projectile/DragonFireball.java
 index 6bf11d526b82403e9a5443ac77645cf2b4bc1ad8..a7a8c63bf61475ebdd45313c5149798f77787fa2 100644
 --- a/src/main/java/net/minecraft/world/entity/projectile/DragonFireball.java

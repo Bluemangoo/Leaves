@@ -3,6 +3,7 @@ From: Bluemangoo <chenfy2006@qq.com>
 Date: Wed, 19 Jun 2024 14:02:18 +0800
 Subject: [PATCH] worse terrain
 
+fixup! Tempered Ender Dragon
 
 diff --git a/src/main/java/net/minecraft/world/level/levelgen/feature/SpikeFeature.java b/src/main/java/net/minecraft/world/level/levelgen/feature/SpikeFeature.java
 index 260c3a7dc592fba220ad4a7febb43ee2c9279115..00137f78d07175d796ab14efa83746cd08905bc1 100644
