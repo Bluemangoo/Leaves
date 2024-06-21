@@ -3,25 +3,34 @@ From: Bluemangoo <chenfy2006@qq.com>
 Date: Wed, 19 Jun 2024 14:02:18 +0800
 Subject: [PATCH] worse terrain
 
-fixup! Tempered Ender Dragon
 
 diff --git a/src/main/java/net/minecraft/world/level/levelgen/feature/SpikeFeature.java b/src/main/java/net/minecraft/world/level/levelgen/feature/SpikeFeature.java
-index 260c3a7dc592fba220ad4a7febb43ee2c9279115..00137f78d07175d796ab14efa83746cd08905bc1 100644
+index 260c3a7dc592fba220ad4a7febb43ee2c9279115..0b34eeea7c0fbb9913414f1f9fd34e07e4687123 100644
 --- a/src/main/java/net/minecraft/world/level/levelgen/feature/SpikeFeature.java
 +++ b/src/main/java/net/minecraft/world/level/levelgen/feature/SpikeFeature.java
-@@ -7,9 +7,11 @@ import com.google.common.collect.Lists;
+@@ -7,9 +7,12 @@ import com.google.common.collect.Lists;
  import com.mojang.serialization.Codec;
  import com.mojang.serialization.codecs.RecordCodecBuilder;
  import it.unimi.dsi.fastutil.ints.IntArrayList;
 +
  import java.util.List;
++import java.util.Random;
  import java.util.concurrent.TimeUnit;
  import java.util.stream.IntStream;
 +
  import net.minecraft.Util;
  import net.minecraft.core.BlockPos;
  import net.minecraft.core.SectionPos;
-@@ -71,7 +73,7 @@ public class SpikeFeature extends Feature<SpikeConfiguration> {
+@@ -44,6 +47,8 @@ public class SpikeFeature extends Feature<SpikeConfiguration> {
+         return SPIKE_CACHE.getUnchecked(l);
+     }
+ 
++    private final Random generateRandom = new Random();
++
+     @Override
+     public boolean place(FeaturePlaceContext<SpikeConfiguration> context) {
+         SpikeConfiguration spikeConfiguration = context.config();
+@@ -71,7 +76,7 @@ public class SpikeFeature extends Feature<SpikeConfiguration> {
              new BlockPos(spike.getCenterX() - i, world.getMinBuildHeight(), spike.getCenterZ() - i),
              new BlockPos(spike.getCenterX() + i, spike.getHeight() + 10, spike.getCenterZ() + i)
          )) {
@@ -30,7 +39,7 @@ index 260c3a7dc592fba220ad4a7febb43ee2c9279115..00137f78d07175d796ab14efa83746cd
                  && blockPos.getY() < spike.getHeight()) {
                  this.setBlock(world, blockPos, Blocks.OBSIDIAN.defaultBlockState());
              } else if (blockPos.getY() > 65) {
-@@ -79,29 +81,23 @@ public class SpikeFeature extends Feature<SpikeConfiguration> {
+@@ -79,29 +84,18 @@ public class SpikeFeature extends Feature<SpikeConfiguration> {
              }
          }
  
@@ -57,27 +66,22 @@ index 260c3a7dc592fba220ad4a7febb43ee2c9279115..00137f78d07175d796ab14efa83746cd
 -                                .setValue(IronBarsBlock.EAST, Boolean.valueOf(bl5 && m != 2));
 -                            this.setBlock(world, mutableBlockPos.set(spike.getCenterX() + m, spike.getHeight() + o, spike.getCenterZ() + n), blockState);
 -                        }
-+        int j = -2;
-+        int k = 2;
-+        int l = 3;
++        int count = this.generateRandom.nextInt(6);
 +        BlockPos.MutableBlockPos mutableBlockPos = new BlockPos.MutableBlockPos();
 +
-+        for (int m = -4; m <= 4; m++) {
-+            for (int n = -4; n <= 4; n++) {
-+                for (int o = -2; o <= 5; o++) {
++        for (int m = -1 - count; m <= 1 + count; m++) {
++            for (int n = -1 - count; n <= 1 + count; n++) {
++                for (int o = -count; o <= 2 + count; o++) {
 +                    boolean bl = Mth.abs(m) >= 2;
 +                    boolean bl2 = Mth.abs(n) >= 2;
 +                    boolean bl3 = o >= 3 || o < 0;
 +                    if (bl || bl2 || bl3) {
-+                        boolean bl4 = m == -2 || m == 2 || bl3;
-+                        boolean bl5 = n == -2 || n == 2 || bl3;
-+                        BlockState blockState = Blocks.CRYING_OBSIDIAN
-+                            .defaultBlockState();
++                        BlockState blockState = Blocks.CRYING_OBSIDIAN.defaultBlockState();
 +                        this.setBlock(world, mutableBlockPos.set(spike.getCenterX() + m, spike.getHeight() + o, spike.getCenterZ() + n), blockState);
                      }
                  }
              }
-@@ -112,7 +108,7 @@ public class SpikeFeature extends Feature<SpikeConfiguration> {
+@@ -112,7 +106,7 @@ public class SpikeFeature extends Feature<SpikeConfiguration> {
              endCrystal.setBeamTarget(config.getCrystalBeamTarget());
              endCrystal.setInvulnerable(config.isCrystalInvulnerable());
              endCrystal.moveTo(
@@ -86,7 +90,7 @@ index 260c3a7dc592fba220ad4a7febb43ee2c9279115..00137f78d07175d796ab14efa83746cd
              );
              endCrystal.generatedByDragonFight = true; // Paper - Fix invulnerable end crystals
              world.addFreshEntity(endCrystal);
-@@ -125,13 +121,13 @@ public class SpikeFeature extends Feature<SpikeConfiguration> {
+@@ -125,13 +119,13 @@ public class SpikeFeature extends Feature<SpikeConfiguration> {
      public static class EndSpike {
          public static final Codec<SpikeFeature.EndSpike> CODEC = RecordCodecBuilder.create(
              instance -> instance.group(
@@ -107,8 +111,19 @@ index 260c3a7dc592fba220ad4a7febb43ee2c9279115..00137f78d07175d796ab14efa83746cd
          );
          private final int centerX;
          private final int centerZ;
-@@ -147,12 +143,12 @@ public class SpikeFeature extends Feature<SpikeConfiguration> {
-             this.height = height;
+@@ -139,20 +133,21 @@ public class SpikeFeature extends Feature<SpikeConfiguration> {
+         private final int height;
+         private final boolean guarded;
+         private final AABB topBoundingBox;
++        private static final Random generateRandom = new Random();
+ 
+         public EndSpike(int centerX, int centerZ, int radius, int height, boolean guarded) {
+             this.centerX = centerX;
+             this.centerZ = centerZ;
+-            this.radius = radius;
+-            this.height = height;
++            this.radius = radius + 3;
++            this.height = height + EndSpike.generateRandom.nextInt(17);
              this.guarded = guarded;
              this.topBoundingBox = new AABB(
 -                (double)(centerX - radius),
@@ -126,7 +141,7 @@ index 260c3a7dc592fba220ad4a7febb43ee2c9279115..00137f78d07175d796ab14efa83746cd
              );
          }
  
-@@ -193,8 +189,8 @@ public class SpikeFeature extends Feature<SpikeConfiguration> {
+@@ -193,8 +188,8 @@ public class SpikeFeature extends Feature<SpikeConfiguration> {
              List<SpikeFeature.EndSpike> list = Lists.newArrayList();
  
              for (int i = 0; i < 10; i++) {
