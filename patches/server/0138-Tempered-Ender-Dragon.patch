@@ -5,7 +5,7 @@ Subject: [PATCH] Tempered Ender Dragon
 
 
 diff --git a/src/main/java/net/minecraft/world/entity/boss/enderdragon/EnderDragon.java b/src/main/java/net/minecraft/world/entity/boss/enderdragon/EnderDragon.java
-index 1df13af62af7d0bbd92c84d424a07da66bb8583f..27a55f8eb68e8f24a648113e772670cd136ce909 100644
+index 1df13af62af7d0bbd92c84d424a07da66bb8583f..b30d0423d29bd046b6bbca59cf3ae6788bb37673 100644
 --- a/src/main/java/net/minecraft/world/entity/boss/enderdragon/EnderDragon.java
 +++ b/src/main/java/net/minecraft/world/entity/boss/enderdragon/EnderDragon.java
 @@ -145,7 +145,7 @@ public class EnderDragon extends Mob implements Enemy {
@@ -17,6 +17,21 @@ index 1df13af62af7d0bbd92c84d424a07da66bb8583f..27a55f8eb68e8f24a648113e772670cd
      }
  
      // Paper start - Allow changing the EnderDragon podium
+@@ -349,10 +349,10 @@ public class EnderDragon extends Mob implements Enemy {
+                 this.tickPart(this.wing1, (double) (f12 * 4.5F), 2.0D, (double) (f11 * 4.5F));
+                 this.tickPart(this.wing2, (double) (f12 * -4.5F), 2.0D, (double) (f11 * -4.5F));
+                 if (!this.level().isClientSide && this.hurtTime == 0) {
+-                    this.knockBack(this.level().getEntities((Entity) this, this.wing1.getBoundingBox().inflate(4.0D, 2.0D, 4.0D).move(0.0D, -2.0D, 0.0D), EntitySelector.NO_CREATIVE_OR_SPECTATOR));
+-                    this.knockBack(this.level().getEntities((Entity) this, this.wing2.getBoundingBox().inflate(4.0D, 2.0D, 4.0D).move(0.0D, -2.0D, 0.0D), EntitySelector.NO_CREATIVE_OR_SPECTATOR));
+-                    this.hurt(this.level().getEntities((Entity) this, this.head.getBoundingBox().inflate(1.0D), EntitySelector.NO_CREATIVE_OR_SPECTATOR));
+-                    this.hurt(this.level().getEntities((Entity) this, this.neck.getBoundingBox().inflate(1.0D), EntitySelector.NO_CREATIVE_OR_SPECTATOR));
++                    this.knockBack(this.level().getEntities((Entity) this, this.wing1.getBoundingBox().inflate(8.0D, 4.0D, 8.0D).move(0.0D, -2.0D, 0.0D), EntitySelector.NO_CREATIVE_OR_SPECTATOR));
++                    this.knockBack(this.level().getEntities((Entity) this, this.wing2.getBoundingBox().inflate(8.0D, 4.0D, 8.0D).move(0.0D, -2.0D, 0.0D), EntitySelector.NO_CREATIVE_OR_SPECTATOR));
++                    this.hurt(this.level().getEntities((Entity) this, this.head.getBoundingBox().inflate(3.0D), EntitySelector.NO_CREATIVE_OR_SPECTATOR));
++                    this.hurt(this.level().getEntities((Entity) this, this.neck.getBoundingBox().inflate(3.0D), EntitySelector.NO_CREATIVE_OR_SPECTATOR));
+                 }
+ 
+                 float f13 = Mth.sin(this.getYRot() * 0.017453292F - this.yRotA * 0.01F);
 @@ -609,7 +609,7 @@ public class EnderDragon extends Mob implements Enemy {
              if (amount < 0.01F) {
                  return false;

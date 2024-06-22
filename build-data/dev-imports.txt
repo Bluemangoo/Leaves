@@ -9,3 +9,4 @@
 #     minecraft net.minecraft.world.level.entity.LevelEntityGetterAdapter
 #     minecraft net/minecraft/world/level/entity/LevelEntityGetter.java
 minecraft net.minecraft.world.level.block.Blocks
+minecraft net.minecraft.data.loot.packs.VanillaBlockLoot

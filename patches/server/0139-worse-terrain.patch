@@ -4,6 +4,26 @@ Date: Wed, 19 Jun 2024 14:02:18 +0800
 Subject: [PATCH] worse terrain
 
 
+diff --git a/src/main/java/net/minecraft/data/loot/packs/VanillaBlockLoot.java b/src/main/java/net/minecraft/data/loot/packs/VanillaBlockLoot.java
+index 37eb3f191c2cd169fa99a3aa58f790d99567e481..312e8f79cf7338bee91a6d097201c817af2affa5 100644
+--- a/src/main/java/net/minecraft/data/loot/packs/VanillaBlockLoot.java
++++ b/src/main/java/net/minecraft/data/loot/packs/VanillaBlockLoot.java
+@@ -213,7 +213,6 @@ public class VanillaBlockLoot extends BlockLootSubProvider {
+         this.dropSelf(Blocks.BRICKS);
+         this.dropSelf(Blocks.MOSSY_COBBLESTONE);
+         this.dropSelf(Blocks.OBSIDIAN);
+-        this.dropSelf(Blocks.CRYING_OBSIDIAN);
+         this.dropSelf(Blocks.TORCH);
+         this.dropSelf(Blocks.OAK_STAIRS);
+         this.dropSelf(Blocks.MANGROVE_STAIRS);
+@@ -1397,6 +1396,7 @@ public class VanillaBlockLoot extends BlockLootSubProvider {
+         this.dropWhenSilkTouch(Blocks.RED_STAINED_GLASS_PANE);
+         this.dropWhenSilkTouch(Blocks.BLACK_STAINED_GLASS_PANE);
+         this.dropWhenSilkTouch(Blocks.ICE);
++        this.dropWhenSilkTouch(Blocks.CRYING_OBSIDIAN);
+         this.dropWhenSilkTouch(Blocks.PACKED_ICE);
+         this.dropWhenSilkTouch(Blocks.BLUE_ICE);
+         this.dropWhenSilkTouch(Blocks.TURTLE_EGG);
 diff --git a/src/main/java/net/minecraft/world/level/block/Blocks.java b/src/main/java/net/minecraft/world/level/block/Blocks.java
 index e7c8313cafc25858ac002e3c45e63db9e8cefee9..ca3f575dad5d165ce4481606ce7b8cc83292630e 100644
 --- a/src/main/java/net/minecraft/world/level/block/Blocks.java
