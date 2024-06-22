@@ -4,6 +4,40 @@ Date: Wed, 19 Jun 2024 14:02:18 +0800
 Subject: [PATCH] worse terrain
 
 
+diff --git a/src/main/java/net/minecraft/world/level/block/Blocks.java b/src/main/java/net/minecraft/world/level/block/Blocks.java
+index e7c8313cafc25858ac002e3c45e63db9e8cefee9..ca3f575dad5d165ce4481606ce7b8cc83292630e 100644
+--- a/src/main/java/net/minecraft/world/level/block/Blocks.java
++++ b/src/main/java/net/minecraft/world/level/block/Blocks.java
+@@ -2,6 +2,7 @@ package net.minecraft.world.level.block;
+ 
+ import java.util.function.ToIntFunction;
+ import javax.annotation.Nullable;
++
+ import net.minecraft.core.BlockPos;
+ import net.minecraft.core.Direction;
+ import net.minecraft.core.Registry;
+@@ -41,9 +42,9 @@ import net.minecraft.world.level.material.PushReaction;
+ 
+ public class Blocks {
+     private static final BlockBehaviour.StatePredicate NOT_CLOSED_SHULKER = (state, world, pos) -> !(
+-                world.getBlockEntity(pos) instanceof ShulkerBoxBlockEntity shulkerBoxBlockEntity
+-            )
+-            || shulkerBoxBlockEntity.isClosed();
++        world.getBlockEntity(pos) instanceof ShulkerBoxBlockEntity shulkerBoxBlockEntity
++    )
++        || shulkerBoxBlockEntity.isClosed();
+     public static final Block AIR = register("air", new AirBlock(BlockBehaviour.Properties.of().replaceable().noCollission().noLootTable().air()));
+     public static final Block STONE = register(
+         "stone",
+@@ -1324,7 +1325,7 @@ public class Blocks {
+                 .mapColor(MapColor.COLOR_BLACK)
+                 .instrument(NoteBlockInstrument.BASEDRUM)
+                 .requiresCorrectToolForDrops()
+-                .strength(50.0F, 1200.0F)
++                .strength(50.0F, 6.0F)
+         )
+     );
+     public static final Block TORCH = register(
 diff --git a/src/main/java/net/minecraft/world/level/levelgen/feature/SpikeFeature.java b/src/main/java/net/minecraft/world/level/levelgen/feature/SpikeFeature.java
 index 260c3a7dc592fba220ad4a7febb43ee2c9279115..0b34eeea7c0fbb9913414f1f9fd34e07e4687123 100644
 --- a/src/main/java/net/minecraft/world/level/levelgen/feature/SpikeFeature.java
