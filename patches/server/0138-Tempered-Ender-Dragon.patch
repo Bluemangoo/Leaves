@@ -82,7 +82,7 @@ index ddf668205a7cb29b9018bf9eea49667b5fd2d471..973c7e5a911b568888cb50febeff4077
  
          if (this.currentPath == null || this.currentPath.isDone()) {
 diff --git a/src/main/java/net/minecraft/world/entity/boss/enderdragon/phases/DragonStrafePlayerPhase.java b/src/main/java/net/minecraft/world/entity/boss/enderdragon/phases/DragonStrafePlayerPhase.java
-index c5269c3117901b8521720d1b32689d7f600f20a3..56e4c2901a00272f2d4374443b4c22ea1f158c6b 100644
+index c5269c3117901b8521720d1b32689d7f600f20a3..721888e78c374d6dcf0e8b863eea28b9d81f724c 100644
 --- a/src/main/java/net/minecraft/world/entity/boss/enderdragon/phases/DragonStrafePlayerPhase.java
 +++ b/src/main/java/net/minecraft/world/entity/boss/enderdragon/phases/DragonStrafePlayerPhase.java
 @@ -1,17 +1,23 @@
@@ -122,7 +122,7 @@ index c5269c3117901b8521720d1b32689d7f600f20a3..56e4c2901a00272f2d4374443b4c22ea
  
              double j = this.targetLocation == null ? 0.0 : this.targetLocation.distanceToSqr(this.dragon.getX(), this.dragon.getY(), this.dragon.getZ());
 -            if (j < 100.0 || j > 22500.0) {
-+            if (j < 100.0 || j > 2500.0 || this.newtargetRandom.nextInt(21) == 0) {
++            if (j < 100.0 || j > 10000.0 || this.newtargetRandom.nextInt(201) == 0) {
                  this.findNewTarget();
              }
 +            Vec3 vec33 = this.dragon.getViewVector(1.0F);
