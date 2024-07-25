@@ -458,10 +458,10 @@ index cb427686bf77366ddc9ad133b08f42b6b34fb0f5..19ee86e42d92c33cb7e35ba07927883d
      // Leaves start - modify - minecraft-old
 diff --git a/src/main/java/top/leavesmc/leaves/bot/BotCommand.java b/src/main/java/top/leavesmc/leaves/bot/BotCommand.java
 new file mode 100644
-index 0000000000000000000000000000000000000000..b9f93bdb9dd350e0615993d785c311ab78e3e2ee
+index 0000000000000000000000000000000000000000..abdb09833d0963985a3ab9fee474635d826e53ec
 --- /dev/null
 +++ b/src/main/java/top/leavesmc/leaves/bot/BotCommand.java
-@@ -0,0 +1,470 @@
+@@ -0,0 +1,471 @@
 +package top.leavesmc.leaves.bot;
 +
 +import org.bukkit.Bukkit;
@@ -720,6 +720,7 @@ index 0000000000000000000000000000000000000000..b9f93bdb9dd350e0615993d785c311ab
 +                Bukkit.getScheduler().cancelTask(bot.removeTaskId);
 +            }
 +            bot.removeTaskId = Bukkit.getScheduler().runTaskLater(CraftScheduler.MINECRAFT, () -> {
++                bot.removeTaskId = -1;
 +                bot.die(bot.damageSources().fellOutOfWorld());
 +            }, time).getTaskId();
 +
@@ -1400,10 +1401,10 @@ index 0000000000000000000000000000000000000000..daaece30b2a3983f1cc9ee9a851e8f37
 +}
 diff --git a/src/main/java/top/leavesmc/leaves/bot/ServerBot.java b/src/main/java/top/leavesmc/leaves/bot/ServerBot.java
 new file mode 100644
-index 0000000000000000000000000000000000000000..26b59531350f82b6c7ee6223d3c1dbe2fe033da0
+index 0000000000000000000000000000000000000000..453dfd7c9bb19fb5b2c6ca983829a32fe8e31813
 --- /dev/null
 +++ b/src/main/java/top/leavesmc/leaves/bot/ServerBot.java
-@@ -0,0 +1,718 @@
+@@ -0,0 +1,722 @@
 +package top.leavesmc.leaves.bot;
 +
 +import com.google.common.collect.Lists;
@@ -1657,6 +1658,10 @@ index 0000000000000000000000000000000000000000..26b59531350f82b6c7ee6223d3c1dbe2
 +
 +    private void dieCheck() {
 +        if (removeOnDeath) {
++            if (this.removeTaskId != -1) {
++                Bukkit.getScheduler().cancelTask(this.removeTaskId);
++                this.removeTaskId = -1;
++            }
 +            bots.remove(this);
 +            server.getPlayerList().removeBot(this);
 +            remove(RemovalReason.KILLED);
