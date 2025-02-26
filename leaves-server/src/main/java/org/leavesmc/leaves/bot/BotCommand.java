@@ -85,7 +85,7 @@ public class BotCommand extends Command {
     @Override
     public List<String> tabComplete(final @NotNull CommandSender sender, final @NotNull String alias, final String[] args, final @Nullable Location location) throws IllegalArgumentException {
         if (args.length <= 1) {
-            return LeavesCommandUtil.getListMatchingLast(sender, args, COMPLETABLE_SUBCOMMANDS);
+            return LeavesCommandUtil.getListMatchingLast(sender, args,  COMPLETABLE_SUBCOMMANDS, "bukkit.command.bot.", "bukkit.command.bot");
         }
 
         final @Nullable Pair<String, LeavesSubcommand> subCommand = resolveCommand(args[0]);

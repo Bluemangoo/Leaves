@@ -69,7 +69,7 @@ public class BotConfigCommand implements LeavesSubcommand {
         List<String> list = new ArrayList<>();
         BotList botList = BotList.INSTANCE;
 
-        if (args.length == 1) {
+        if (args.length <= 1) {
             list.addAll(botList.bots.stream().map(e -> e.getName().getString()).toList());
         }
 
